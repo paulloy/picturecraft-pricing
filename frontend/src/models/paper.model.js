@@ -1,4 +1,5 @@
 export class Paper {
+    id;
     name;
     length_cm;
     width_cm;
@@ -8,8 +9,9 @@ export class Paper {
     costPerUnitArea_cm;
     costPerUnitArea_inch;
 
-    constructor(name, length, width, cost) {
+    constructor(id, name, length, width, cost) {
         const conversionValue = 0.3937007874;
+        this.id = id;
         this.name = name;
         this.length_cm = length;
         this.width_cm = width;

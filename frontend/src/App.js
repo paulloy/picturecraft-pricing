@@ -15,10 +15,17 @@ function App() {
     axios.get('http://localhost:4000/api/paper')
     .then(res => 
       setPaper(res.data.map((data) => {
-        return new Paper(data.name, data.length, data.width, data.cost);
+        return new Paper(data._id, data.name, data.length, data.width, data.cost);
       }))
     )
   }, []); 
+
+  const handleDelete = (id) => {
+    axios.delete(`http://localhost:4000/api/paper/delete/${id}`)
+    .then(res => 
+      console.log(res)
+    );
+  }
 
   // do this because typescript
   if (paper === paperData) return <p>Loading Data</p>;
@@ -37,11 +44,12 @@ function App() {
             <td><strong>Length (inches)</strong></td>
             <td><strong>Width (inches)</strong></td>
             <td><strong>Paper Cost per Inch</strong></td>
+            <td><strong>DELETE</strong></td>
           </tr>
         </thead>
         <tbody>
         { paper.map((obj) => (
-          <tr>
+          <tr key={ obj.id }>
             <td>{ obj.name }</td>
             <td>{ parseFloat(obj.length_cm).toFixed(2) } cm</td>
             <td>{ parseFloat(obj.width_cm).toFixed(2) } cm</td>
@@ -50,6 +58,7 @@ function App() {
             <td>{ parseFloat(obj.length_inch).toFixed(2) } inch</td>
             <td>{ parseFloat(obj.width_inch).toFixed(2) } inch</td>
             <td>{ parseFloat(obj.costPerUnitArea_inch).toFixed(2) } £/inch</td>
+            <td><button type="button" onClick={() => handleDelete(obj.id)}>DELETE</button></td>
           </tr>
         )) }
         </tbody>

@@ -10,11 +10,11 @@ router.get('/paper', function(req, res, next) {
     }).catch(next);
 });
 // Get one paper with id
-router.get('/paper/:id', function(req, res, next) {
-    Paper.findOne({_id: req.params.id}, req.body).then(function(paper) {
-        res.send(paper);
-    }).catch(next);
-})
+// router.get('/paper/:id', function(req, res, next) {
+//     Paper.findOne({_id: req.params.id}, req.body).then(function(paper) {
+//         res.send(paper);
+//     }).catch(next);
+// })
 
 // POST
 router.post('/paper/create', function(req, res, next){
@@ -44,9 +44,13 @@ router.put('/paper/:id', function(req, res, next){
 });
 
 // DELETE
-router.delete('/paper/:id', function(req, res, next){
-    Paper.findOneAndDelete({_id: req.params.id}).then(function(paper) {
-        res.send(paper);
+router.delete('/paper/delete/:id', function(req, res, next){
+    Paper.findByIdAndRemove({_id: req.params.id}, (error, deletedRecord) => {
+        if (!error) {
+            console.log(deletedRecord);
+        } else {
+            console.log(error);
+        }
     });
 });
 
