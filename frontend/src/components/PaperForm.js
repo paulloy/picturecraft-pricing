@@ -1,7 +1,9 @@
 import React, { useRef } from "react"
 import axios from 'axios';
 
-function PaperForm() {
+import '../stylesheets/paper-form.css';
+
+export default function PaperForm() {
     const paperName = useRef();
     const paperLength = useRef();
     const paperWidth = useRef();
@@ -26,16 +28,16 @@ function PaperForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="form" onSubmit={handleSubmit}>
+            <label>Name</label>
             <input ref={paperName} type="text" placeholder="name" />
+            <label>Length (cm)</label>
             <input ref={paperLength} type="number" placeholder="length (cm)" name="length"/>
+            <label>Width (cm)</label>
             <input ref={paperWidth} type="number" placeholder="width (cm)" name="width"/>
+            <label>Cost</label>
             <input ref={paperCost} type="number" placeholder="Cost (£)" name="cost"/>
             <button type="submit">Add new Paper</button>
         </form>  
     );
 }
-
-
-
-  export default PaperForm;
