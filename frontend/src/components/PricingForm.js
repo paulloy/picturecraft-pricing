@@ -1,18 +1,12 @@
 import react, { useRef, useState } from "react";
 import "../stylesheets/pricing-form.css";
 
-export default function PricingForm({ paper }) {
+export default function PricingForm({ paper, inkCost }) {
   // User can input dimensions in units of cm or inches.
   const [formInputs, setFormInputs] = useState({
     unit: "cm",
     width: 0,
     length: 0,
-  });
-
-  const [calculator, setCalculator] = useState({
-    imageArea: 0,
-    inkPerUnitArea_cm: 1,
-    inkPerUnitArea_inches: 1,
   });
 
   const [selectedPaper, setSelectedPaper] = useState(null);
@@ -22,7 +16,7 @@ export default function PricingForm({ paper }) {
   const [total, setTotal] = useState({
     subTotal: 0,
     vat: 0,
-    grandTotal: 0
+    grandTotal: 0,
   });
 
   let formWidth = useRef();
@@ -59,24 +53,34 @@ export default function PricingForm({ paper }) {
   const makeCalculation = () => {
     let unit = formInputs.unit;
     if (unit === "cm") {
+      let inkCostPerUnit_ml = inkCost.cost / inkCost.volume;
+      // figure out this value
+      let inkUsedPerUnitArea_cm = 0.155;
       let { width, length } = formInputs;
       let area = width * length;
-      let subTotal = costPerUnitArea_cm.current.value * area;
+      let inkUsed = inkUsedPerUnitArea_cm * area;
+      let usedInkCost = inkUsed * inkCostPerUnit_ml;
+      let subTotal = (costPerUnitArea_cm.current.value * area) + usedInkCost;
       let total = quantity * subTotal;
       setTotal({
         subTotal: total,
         vat: total * 0.2,
-        grandTotal: total + (total * 0.2)
+        grandTotal: total + total * 0.2,
       });
     } else if (unit === "inches") {
+      let inkCostPerUnit_ml = inkCost.cost / inkCost.volume;
+      // figure out this value
+      let inkUsedPerUnitArea_inches = 1;
       let { width, length } = formInputs;
       let area = width * length;
-      let subTotal = costPerUnitArea_inch.current.value * area;
+      let inkUsed = inkUsedPerUnitArea_inches * area;
+      let usedInkCost = inkUsed * inkCostPerUnit_ml;
+      let subTotal = (costPerUnitArea_inch.current.value * area) + usedInkCost;
       let total = quantity * subTotal;
       setTotal({
         subTotal: total,
         vat: total * 0.2,
-        grandTotal: total + (total * 0.2)
+        grandTotal: total + total * 0.2,
       });
     }
   };
@@ -84,10 +88,10 @@ export default function PricingForm({ paper }) {
   return (
     <form className="paper-form">
       {/* note: include ink for prices */}
-      <h4>Paper</h4>
-      {/* div:nth-of-type(1) */}
       <div className="bb">
+        <h4>Paper</h4>
         <select
+          className="select-padding"
           name="paper"
           id="paper"
           onChange={(e) => setSelectedPaper(JSON.parse(e.target.value))}
@@ -103,21 +107,20 @@ export default function PricingForm({ paper }) {
         </select>
         <input
           type="hidden"
-          ref={ costPerUnitArea_cm }
+          ref={costPerUnitArea_cm}
           value={selectedPaper ? selectedPaper.costPerUnitArea_cm : ""}
         />
         <input
           type="hidden"
-          ref={ costPerUnitArea_inch }
+          ref={costPerUnitArea_inch}
           value={selectedPaper ? selectedPaper.costPerUnitArea_inch : ""}
         />
         <a href="#">Open Settings</a>
       </div>
-      <h4>Dimensions</h4>
-      {/* Unit Selector */}
-      {/* div:nth-of-type(2) */}
-      <div>
+      <div className="flex-col">
+        <h4>Dimensions</h4>
         <select
+          className="select-padding"
           name="dimensions"
           id="dimensions"
           onChange={(e) => handleDimensionChoice(e)}
@@ -125,55 +128,58 @@ export default function PricingForm({ paper }) {
           <option value="cm">cm</option>
           <option value="inches">inches</option>
         </select>
+        <table>
+          <tr>
+            <td>
+              <label>Width</label>
+            </td>
+            <td>
+              <input
+                ref={formWidth}
+                value={formInputs.width}
+                type="number"
+                onChange={(e) =>
+                  setFormInputs({ ...formInputs, width: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <span>{formInputs.unit}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Length</label>
+            </td>
+            <td>
+              <input
+                ref={formLength}
+                value={formInputs.length}
+                type="number"
+                onChange={(e) =>
+                  setFormInputs({ ...formInputs, length: e.target.value })
+                }
+              />
+            </td>
+            <td>
+              <span>{formInputs.unit}</span>
+            </td>
+          </tr>
+        </table>
       </div>
-      {/* Width */}
-      {/* div:nth-of-type(3) */}
-      <div className="flex-row">
-        <label>Width</label>
-
-        <input
-          ref={formWidth}
-          value={formInputs.width}
-          type="number"
-          onChange={(e) =>
-            setFormInputs({ ...formInputs, width: e.target.value })
-          }
-        />
-
-        <span>{formInputs.unit}</span>
-      </div>
-      {/* Length */}
-      {/* div:nth-of-type(4) */}
-      <div className="bb flex-row">
-        <label>Length</label>
-
-        <input
-          ref={formLength}
-          value={formInputs.length}
-          type="number"
-          onChange={(e) =>
-            setFormInputs({ ...formInputs, length: e.target.value })
-          }
-        />
-
-        <span>{formInputs.unit}</span>
-      </div>
-      <h4>Quantity</h4>
-      {/* div:nth-of-type(5) */}
-      <div className="bb">
+      <div className="flex-col">
+        <h4>Quantity</h4>
         <input
           type="number"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
         />
       </div>
-      <h4>Price</h4>
-      {/* div:nth-of-type(6) */}
-      <div>
+      <div className="flex-col">
+        <h4>Price</h4>
         <p>Sub-Total £{total.subTotal.toFixed(1)}0</p>
         <p>VAT £{total.vat.toFixed(1)}0</p>
         <p>Grand Total £{total.grandTotal.toFixed(1)}0</p>
-        <p>include vat. and make order form</p>
         {/* improve rounding  */}
         <a onClick={makeCalculation}>calculate</a>
         <button>Add to Cart</button>
