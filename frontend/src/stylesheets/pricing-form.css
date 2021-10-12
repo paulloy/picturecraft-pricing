@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.paper-form {
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  font-family: 'Open Sans';
+}
+.paper-form div {
+  padding: 0.5rem;
+  border: 1px solid black;
+  width: 20vw;
+}
+.paper-form div:nth-of-type(1) {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.select-padding {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+.paper-form div:nth-of-type(1) a {
+  align-self: flex-end;
+  justify-self: flex-end;
+}
+h4 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.paper-form td {
+  border: 0;
+}
+.paper-form div:nth-of-type(2) table tr td input {
+  width: 5rem;
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+.paper-form div:nth-of-type(2) table tr td span {
+  width: 4rem;
+  margin-left: auto;
+  text-align: right;
+}
+
+.paper-form div:nth-of-type(3) input {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.paper-form div:nth-of-type(4) p {
+  text-align: center;
+}
+.paper-form div:nth-of-type(4) a {
+  border: 1px solid black;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  padding: 0.5rem;
+}
+.paper-form div:nth-of-type(4) button {
+  border: 1px solid black;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.bg-colour-selection {
+  color: #093145;
+  color: #107896;
+  color: #829356;
+  color: #bca136;
+  color: #c2571a;
+  color: #9a2617;
+}
+
+#psp {
+  display: none;
+}
