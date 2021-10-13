@@ -19,16 +19,14 @@ export default function PricingForm({ paper, inkCost }) {
     grandTotal: 0,
   });
 
-  let formWidth = useRef();
-  let formLength = useRef();
-  let costPerUnitArea_cm = useRef();
-  let costPerUnitArea_inch = useRef();
+  let imageWidth = useRef();
+  let imageLength = useRef();
 
   // this is called when a user selects a new unit. Inputted values are converted
   const handleDimensionChoice = (e) => {
     let unitValue = e.target.value;
-    let width = formWidth.current.value;
-    let length = formLength.current.value;
+    let width = imageWidth.current.value;
+    let length = imageLength.current.value;
     if (unitValue === "cm") {
       // cm --> inches
       let coefficient = 2.54;
@@ -53,34 +51,40 @@ export default function PricingForm({ paper, inkCost }) {
   const makeCalculation = () => {
     let unit = formInputs.unit;
     if (unit === "cm") {
-      let inkCostPerUnit_ml = inkCost.cost / inkCost.volume;
-      // figure out this value
-      let inkUsedPerUnitArea_cm = 0.155;
+      // alpha = area (cm^2) covered by 1ml of ink
+      let alpha = 181.2069;
       let { width, length } = formInputs;
-      let area = width * length;
-      let inkUsed = inkUsedPerUnitArea_cm * area;
-      let usedInkCost = inkUsed * inkCostPerUnit_ml;
-      let subTotal = (costPerUnitArea_cm.current.value * area) + usedInkCost;
-      let total = quantity * subTotal;
+      let paperCost = selectedPaper.cost;
+      let paperWidth = selectedPaper.width_cm;
+      let paperLength = selectedPaper.length_cm;
+      let inkPrice = inkCost.cost;
+      let inkVolume = inkCost.volume;
+
+      let subTotal = quantity * ((width * length) * ((paperCost / (paperWidth * paperLength)) + (inkPrice / (inkVolume * alpha))));
+      let vat = subTotal * 0.2;
+      let total = subTotal * 1.2;
       setTotal({
-        subTotal: total,
-        vat: total * 0.2,
-        grandTotal: total + total * 0.2,
+        subTotal: subTotal,
+        vat: vat,
+        grandTotal: total
       });
     } else if (unit === "inches") {
-      let inkCostPerUnit_ml = inkCost.cost / inkCost.volume;
-      // figure out this value
-      let inkUsedPerUnitArea_inches = 1;
+      // alpha = area (cm^2) covered by 1ml of ink
+      let alpha = 28.087125674;
       let { width, length } = formInputs;
-      let area = width * length;
-      let inkUsed = inkUsedPerUnitArea_inches * area;
-      let usedInkCost = inkUsed * inkCostPerUnit_ml;
-      let subTotal = (costPerUnitArea_inch.current.value * area) + usedInkCost;
-      let total = quantity * subTotal;
+      let paperCost = selectedPaper.cost;
+      let paperWidth = selectedPaper.width_inch;
+      let paperLength = selectedPaper.length_inch;
+      let inkPrice = inkCost.cost;
+      let inkVolume = inkCost.volume;
+
+      let subTotal = quantity * ((width * length) * ((paperCost / (paperWidth * paperLength)) + (inkPrice / (inkVolume * alpha))));
+      let vat = subTotal * 0.2;
+      let total = subTotal * 1.2;
       setTotal({
-        subTotal: total,
-        vat: total * 0.2,
-        grandTotal: total + total * 0.2,
+        subTotal: subTotal,
+        vat: vat,
+        grandTotal: total
       });
     }
   };
@@ -105,16 +109,6 @@ export default function PricingForm({ paper, inkCost }) {
             </option>
           ))}
         </select>
-        <input
-          type="hidden"
-          ref={costPerUnitArea_cm}
-          value={selectedPaper ? selectedPaper.costPerUnitArea_cm : ""}
-        />
-        <input
-          type="hidden"
-          ref={costPerUnitArea_inch}
-          value={selectedPaper ? selectedPaper.costPerUnitArea_inch : ""}
-        />
         <a href="#">Open Settings</a>
       </div>
       <div className="flex-col">
@@ -135,7 +129,7 @@ export default function PricingForm({ paper, inkCost }) {
             </td>
             <td>
               <input
-                ref={formWidth}
+                ref={imageWidth}
                 value={formInputs.width}
                 type="number"
                 onChange={(e) =>
@@ -153,7 +147,7 @@ export default function PricingForm({ paper, inkCost }) {
             </td>
             <td>
               <input
-                ref={formLength}
+                ref={imageLength}
                 value={formInputs.length}
                 type="number"
                 onChange={(e) =>
