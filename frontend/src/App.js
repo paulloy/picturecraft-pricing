@@ -52,11 +52,14 @@ function App() {
     <React.Fragment>
       <PricingForm paper={paper.data} inkCost={inkCost} />
       <PaperForm />
-      <table>
+      <table className="table">
         <thead>
           <tr>
             <td>
               <strong>Paper Name</strong>
+            </td>
+            <td>
+              <strong>Paper Cost (£)</strong>
             </td>
             <td>
               <strong>Length (cm)</strong>
@@ -65,19 +68,10 @@ function App() {
               <strong>Width (cm)</strong>
             </td>
             <td>
-              <strong>Paper Cost (£)</strong>
-            </td>
-            <td>
-              <strong>Paper Cost per cm</strong>
-            </td>
-            <td>
               <strong>Length (inches)</strong>
             </td>
             <td>
               <strong>Width (inches)</strong>
-            </td>
-            <td>
-              <strong>Paper Cost per Inch</strong>
             </td>
             <td>
               <strong>DELETE</strong>
@@ -88,13 +82,11 @@ function App() {
           {paper.data.map((obj) => (
             <tr key={obj.id}>
               <td>{obj.name}</td>
+              <td>£{obj.cost}</td>
               <td>{parseFloat(obj.length_cm).toFixed(2)} cm</td>
               <td>{parseFloat(obj.width_cm).toFixed(2)} cm</td>
-              <td>£{obj.cost}</td>
-              <td>{parseFloat(obj.costPerUnitArea_cm).toFixed(2)} £/cm</td>
               <td>{parseFloat(obj.length_inch).toFixed(2)} inch</td>
               <td>{parseFloat(obj.width_inch).toFixed(2)} inch</td>
-              <td>{parseFloat(obj.costPerUnitArea_inch).toFixed(2)} £/inch</td>
               <td>
                 <button type="button" onClick={() => handleDelete(obj.id)}>
                   DELETE
