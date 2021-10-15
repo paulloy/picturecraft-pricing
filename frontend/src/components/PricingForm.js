@@ -1,3 +1,4 @@
+import React from "react";
 import react, { useRef, useState } from "react";
 import "../stylesheets/pricing-form.css";
 
@@ -50,43 +51,34 @@ export default function PricingForm({ paper, inkCost }) {
 
   const makeCalculation = () => {
     let unit = formInputs.unit;
-    if (unit === "cm") {
-      // alpha = area (cm^2) covered by 1ml of ink
-      let alpha = 181.2069;
+      // alpha = unit === 'cm' ? area (cm^2) : (inches^2) covered by 1ml of ink
+      let alpha = unit === "cm" 
+                ? 0.00146131 
+                : 0.00942776;
+
       let { width, length } = formInputs;
       let paperCost = selectedPaper.cost;
-      let paperWidth = selectedPaper.width_cm;
-      let paperLength = selectedPaper.length_cm;
+
+      let paperWidth = unit === "cm" 
+                     ? selectedPaper.width_cm 
+                     : selectedPaper.width_inch;
+
+      let paperLength = unit === "cm" 
+                      ? selectedPaper.length_cm 
+                      : selectedPaper.length_inch;
+
       let inkPrice = inkCost.cost;
       let inkVolume = inkCost.volume;
 
-      let subTotal = quantity * ((width * length) * ((paperCost / (paperWidth * paperLength)) + (inkPrice / (inkVolume * alpha))));
+      let subTotal = quantity * ((width * length) * (((paperCost / (paperWidth * paperLength)) + ((inkPrice * alpha) / (inkVolume)))));
       let vat = subTotal * 0.2;
       let total = subTotal * 1.2;
+
       setTotal({
         subTotal: subTotal,
         vat: vat,
         grandTotal: total
       });
-    } else if (unit === "inches") {
-      // alpha = area (cm^2) covered by 1ml of ink
-      let alpha = 28.087125674;
-      let { width, length } = formInputs;
-      let paperCost = selectedPaper.cost;
-      let paperWidth = selectedPaper.width_inch;
-      let paperLength = selectedPaper.length_inch;
-      let inkPrice = inkCost.cost;
-      let inkVolume = inkCost.volume;
-
-      let subTotal = quantity * ((width * length) * ((paperCost / (paperWidth * paperLength)) + (inkPrice / (inkVolume * alpha))));
-      let vat = subTotal * 0.2;
-      let total = subTotal * 1.2;
-      setTotal({
-        subTotal: subTotal,
-        vat: vat,
-        grandTotal: total
-      });
-    }
   };
 
   return (
@@ -171,12 +163,23 @@ export default function PricingForm({ paper, inkCost }) {
       </div>
       <div className="flex-col">
         <h4>Price</h4>
-        <p>Sub-Total £{total.subTotal.toFixed(1)}0</p>
-        <p>VAT £{total.vat.toFixed(1)}0</p>
-        <p>Grand Total £{total.grandTotal.toFixed(1)}0</p>
+        <table>
+          <tr>
+            <td><strong>Sub-Total</strong></td>
+            <td>£{total.subTotal.toFixed(1)}0</td>
+          </tr>
+          <tr>
+            <td><strong>VAT</strong></td>
+            <td>£{total.vat.toFixed(1)}0</td>
+          </tr>
+          <tr>
+            <td><strong>Grand Total</strong></td>
+            <td>£{total.grandTotal.toFixed(1)}0</td>
+          </tr>
+        </table>
         {/* improve rounding  */}
-        <a onClick={makeCalculation}>calculate</a>
-        <button>Add to Cart</button>
+        <a onClick={makeCalculation}>Calculate</a>
+        {/* <a>Add to Cart</a> */}
       </div>
     </form>
   );
