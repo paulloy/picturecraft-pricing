@@ -1,5 +1,5 @@
 import React from "react";
-import react, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "../stylesheets/pricing-form.css";
 
 export default function PricingForm({ paper, inkCost }) {
@@ -20,65 +20,75 @@ export default function PricingForm({ paper, inkCost }) {
     grandTotal: 0,
   });
 
+  const [errorMessage, setErrorMessage] = useState(null);
+
   let imageWidth = useRef();
   let imageLength = useRef();
 
   // this is called when a user selects a new unit. Inputted values are converted
   const handleDimensionChoice = (e) => {
-    let unitValue = e.target.value;
+    let unit = e.target.value;
     let width = imageWidth.current.value;
     let length = imageLength.current.value;
-    if (unitValue === "cm") {
-      // cm --> inches
-      let coefficient = 2.54;
-      setFormInputs({
-        unit: "cm",
-        width: width * coefficient,
-        length: length * coefficient,
-      });
-    } else if (unitValue === "inches") {
-      // inches --> cm
-      let coefficient = 0.393701;
-      setFormInputs({
-        unit: "inches",
-        width: width * coefficient,
-        length: length * coefficient,
-      });
-    } else {
-      console.error('error has occurred with "handleDimensionChoice" function');
-    }
+
+    // units are cm, then inches
+    let coefficient = unit === 'cm' ? 2.54 : 0.393701;
+    setFormInputs({
+      unit: unit,
+      width: +(width * coefficient).toFixed(2),
+      length: +(length * coefficient).toFixed(2),
+    });
   };
 
   const makeCalculation = () => {
     let unit = formInputs.unit;
-      // alpha = unit === 'cm' ? area (cm^2) : (inches^2) covered by 1ml of ink
-      let alpha = unit === "cm" 
-                ? 0.00146131 
-                : 0.00942776;
+    setErrorMessage(null);
+    // alpha = unit === 'cm' ? area (cm^2) : (inches^2) covered by 1ml of ink
+    let alpha = unit === "cm" 
+              ? 0.00146131 
+              : 0.00942776;
 
-      let { width, length } = formInputs;
-      let paperCost = selectedPaper.cost;
+    let { width, length } = formInputs;
 
-      let paperWidth = unit === "cm" 
-                     ? selectedPaper.width_cm 
-                     : selectedPaper.width_inch;
+    if (!selectedPaper) {
+      setErrorMessage('Please select a paper');
+      return;
+    }
+    if (width <= 0) {
+      setErrorMessage('Width is set to an invalid value');
+      return;
+    }
+    if (length <= 0) {
+      setErrorMessage('Length is set to an invalid value');
+      return;
+    }
+    if (quantity <= 0) {
+      setErrorMessage('Quantity is set to an invalid value');
+      return;
+    }
+    
+    let paperCost = selectedPaper.cost;
 
-      let paperLength = unit === "cm" 
-                      ? selectedPaper.length_cm 
-                      : selectedPaper.length_inch;
+    let paperWidth = unit === "cm" 
+                  ? selectedPaper.width_cm 
+                  : selectedPaper.width_inch;
 
-      let inkPrice = inkCost.cost;
-      let inkVolume = inkCost.volume;
+    let paperLength = unit === "cm" 
+                    ? selectedPaper.length_cm 
+                    : selectedPaper.length_inch;
 
-      let subTotal = quantity * ((width * length) * (((paperCost / (paperWidth * paperLength)) + ((inkPrice * alpha) / (inkVolume)))));
-      let vat = subTotal * 0.2;
-      let total = subTotal * 1.2;
+    let inkPrice = inkCost.cost;
+    let inkVolume = inkCost.volume;
 
-      setTotal({
-        subTotal: subTotal,
-        vat: vat,
-        grandTotal: total
-      });
+    let subTotal = quantity * ((width * length) * (((paperCost / (paperWidth * paperLength)) + ((inkPrice * alpha) / (inkVolume)))));
+    let vat = subTotal * 0.2;
+    let total = subTotal * 1.2;
+
+    setTotal({
+      subTotal: subTotal,
+      vat: vat,
+      grandTotal: total
+    });
   };
 
   return (
@@ -166,18 +176,35 @@ export default function PricingForm({ paper, inkCost }) {
         <table>
           <tr>
             <td><strong>Sub-Total</strong></td>
-            <td>£{total.subTotal.toFixed(1)}0</td>
+            <td>
+              { !errorMessage
+                ? `£${total.subTotal.toFixed(1)}0`
+                : '£0.00'}
+            </td>
           </tr>
           <tr>
             <td><strong>VAT</strong></td>
-            <td>£{total.vat.toFixed(1)}0</td>
+            <td>
+              { !errorMessage
+                ? `£${total.vat.toFixed(1)}0`
+                : '£0.00'}
+            </td>
           </tr>
           <tr>
             <td><strong>Grand Total</strong></td>
-            <td>£{total.grandTotal.toFixed(1)}0</td>
+            <td>
+              { !errorMessage
+                ? `£${total.grandTotal.toFixed(1)}0`
+                : '£0.00'}
+            </td>
           </tr>
         </table>
-        {/* improve rounding  */}
+
+        {/* error messages */}
+        { errorMessage !== null
+                        ? <p className="error">{ errorMessage }</p> 
+                        : null }
+        
         <a onClick={makeCalculation}>Calculate</a>
         {/* <a>Add to Cart</a> */}
       </div>
