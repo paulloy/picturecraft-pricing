@@ -49,8 +49,8 @@ export default function PricingForm({ paper, inkCost }) {
     setErrorMessage(null);
     // alpha = unit === 'cm' ? area (cm^2) : (inches^2) covered by 1ml of ink
     let alpha = unit === "cm" 
-              ? 0.00146131 
-              : 0.00942776;
+              ? 0.0158 
+              : 0.1015;
 
     let { width, length } = formInputs;
 
@@ -96,8 +96,6 @@ export default function PricingForm({ paper, inkCost }) {
   };
 
   const addToMyCart = () => {
-    // Fix error problems
-
     let newCartItem = {
       name: selectedPaper.name,
       width: formInputs.width,
