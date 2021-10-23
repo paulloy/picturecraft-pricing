@@ -59,16 +59,19 @@
 .img-dimension span {
     text-align: left;
 }
-.qty {
-    margin-left: -7rem;
-}
 .qty label {
-    width: 5rem;
     text-align: right;
     font-weight: 600;
+    margin-right: 1rem;
 }
 .qty input {
-    width: 10rem;
+    width: 4rem;
+    height: 2.2rem;
+}
+.qty button {
+    border-radius: 0;
+    height: 2.2rem;
+    width: 2.2rem;
 }
 
 .col-3-custom {
