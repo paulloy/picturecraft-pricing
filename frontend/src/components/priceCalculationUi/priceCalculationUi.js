@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './price-calculation-ui.css';
 
 // class Paper {
@@ -8,7 +8,36 @@ import './price-calculation-ui.css';
 
 export default function PriceCalculationUi() {
 
-    const [dimensionUnit, setDimensionUnit] = useState('inches');
+    const [dimensions, setDimensions] = useState({
+        unit: 'inches',
+        width: 0,
+        length: 0,
+        qty: 1
+    });
+
+    const [costs, setCosts] = useState({
+        total: 0,
+        vat: 0
+    });
+
+    const calculateTotal = () => {
+        const { width, length, qty } = dimensions;
+        // temporary values
+        const inkCostPerUnitArea = 0.002902;
+        const paperCostPerUnitArea = 0.005426363;
+        const pp = 2.6;
+        // 
+        const subTotal = ((((width * length) * paperCostPerUnitArea) + ((width * length) * inkCostPerUnitArea)) * pp) * qty;
+        const vat = subTotal * 0.2;
+        setCosts({
+            total: (vat + subTotal).toFixed(2),
+            vat: vat.toFixed(2)
+        });
+    }
+
+    useEffect(() => {
+        calculateTotal();
+    }, [dimensions]);
 
     return (
         <div className="container-fluid">
@@ -24,7 +53,7 @@ export default function PriceCalculationUi() {
                                 className="form-select form-select-lg mb-3" 
                                 name="dimension-selector" 
                                 id="dimension-selector" 
-                                onChange={(e) => setDimensionUnit(e.target.value)}>
+                                onChange={(e) => setDimensions({unit: e.target.value, width: 0, length: 0, qty: 1})}>
                                     <option value="inches">inches</option>
                                     <option value="cm">cm</option>
                             </select>
@@ -32,18 +61,20 @@ export default function PriceCalculationUi() {
                         <hr className="m-0 mb-4 mt-2"/>
                         <span className="d-flex img-dimension">
                             <label className="mx-3 col-4" htmlFor="">Width</label>
-                            <input className="col-6" type="number" />
-                            <span className="mx-3 col-4">{dimensionUnit}</span>
+                            <input className="col-6" type="number" step="0.01" min="0" max="10000" value={dimensions.width} onChange={(e) => setDimensions({...dimensions, width: e.target.value})}/>
+                            <span className="mx-3 col-4">{dimensions.unit}</span>
                         </span>
                         <span className="d-flex p-2 img-dimension">
                             <label className="mx-3 col-4" htmlFor="">Length</label>
-                            <input className="col-6" type="number" />
-                            <span className="mx-3 col-4">{dimensionUnit}</span>
+                            <input className="col-6" type="number" step="0.01" min="0" max="10000" value={dimensions.length} onChange={(e) => setDimensions({...dimensions, length: e.target.value})}/>
+                            <span className="mx-3 col-4">{dimensions.unit}</span>
                         </span>
                         <hr />
                         <span className="d-flex p-2 justify-content-center qty">
                             <label className="mx-3" htmlFor="">Quantity</label>
-                            <input type="number" />
+                            <button className="btn btn-secondary" onClick={() => setDimensions({...dimensions, qty: dimensions.qty - 1})}><i class="fas fa-chevron-left"></i></button>
+                            <input className="text-right" type="number" step="1" min="1" max="1000" value={dimensions.qty} onChange={(e) => setDimensions({...dimensions, qty: e.target.value})}/>
+                            <button className="btn btn-secondary" onClick={() => setDimensions({...dimensions, qty: dimensions.qty + 1})}><i class="fas fa-chevron-right"></i></button>
                         </span>
                     </div>
                     <div className="col-3-custom p-4 glass-morphism">
@@ -61,11 +92,11 @@ export default function PriceCalculationUi() {
                         <h4 className="align-left">Order Summary</h4>
                         <div className="row">
                             <div className="col-6"><strong>Width</strong></div>
-                            <div className="col-6">8 inches</div>
+                            <div className="col-6">{dimensions.width} {dimensions.unit}</div>
                         </div>
                         <div className="row">
                             <div className="col-6"><strong>Length</strong></div>
-                            <div className="col-6">10 inches</div>
+                            <div className="col-6">{dimensions.length} {dimensions.unit}</div>
                         </div>
                         <div className="row">
                             <div className="col-6"><strong>Paper Type</strong></div>
@@ -73,16 +104,16 @@ export default function PriceCalculationUi() {
                         </div>
                         <div className="row">
                             <div className="col-6"><strong>Quantity</strong></div>
-                            <div className="col-6">1</div>
+                            <div className="col-6">{dimensions.qty}</div>
                         </div>
                         <hr />
                         <div className="row">
                             <div className="col-6"><strong>VAT</strong></div>
-                            <div className="col-6">£0.00</div>
+                            <div className="col-6">£{costs.vat}</div>
                         </div>
                         <div className="row">
                             <div className="col-6"><strong>Total</strong></div>
-                            <div className="col-6">£0.00</div>
+                            <div className="col-6">£{costs.total}</div>
                         </div>
                         <div className="row mt-5">
                             <button className="btn btn-primary">Add to Cart</button>
@@ -111,7 +142,7 @@ export default function PriceCalculationUi() {
                     <hr />
                     <div className="row">
                         <div className="col-6"><strong>Sub-total</strong></div>
-                        <div className="col-6">£0.00</div>
+                        <div className="col-6">£</div>
                     </div>
                     <div className="row">
                         <div className="col-6"><strong>VAT</strong></div>

@@ -26,6 +26,10 @@
     margin-bottom: 1rem;
 }
 
+.text-right {
+    text-align: right;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap');
 .align-left {
   text-align: left;
@@ -46,6 +50,7 @@
 }
 .img-dimension input {
     width: 12rem;
+    text-align: right;
 }
 .img-dimension label {
     text-align: right;
