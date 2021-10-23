@@ -1,14 +1,77 @@
 .img {
-    height: 15rem;
+    height: 10rem;
     width: 100%;
     object-fit: cover;
 }
 
 .glass-morphism {
-    background: rgba( 255, 255, 255, 0.25 );
+    background: rgba(255, 255, 255, 0.7);
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
     backdrop-filter: blur( 20px );
     -webkit-backdrop-filter: blur( 20px );
     border-radius: 10px;
     border: 1px solid rgba( 255, 255, 255, 0.18 );
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+}
+
+.settings {
+    height: 3rem;
+    width: 3rem;
+    background-color: white;
+    border: 0;
+    font-size: 1.4rem;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap');
+.align-left {
+  text-align: left;
+  font-family: serif;
+  font-family: 'EB Garamond', serif;
+  padding-bottom: 1rem;
+  font-weight: 400;
+}
+.border-b-double {
+    border-bottom: 10px double rgba(255, 255, 255);
+}
+.ml-auto {
+    margin-left: auto;
+}
+.img-dimension {
+    display: flex;
+    justify-content: center;
+}
+.img-dimension input {
+    width: 12rem;
+}
+.img-dimension label {
+    text-align: right;
+    font-weight: 600;
+}
+.img-dimension span {
+    text-align: left;
+}
+.qty {
+    margin-left: -7rem;
+}
+.qty label {
+    width: 5rem;
+    text-align: right;
+    font-weight: 600;
+}
+.qty input {
+    width: 10rem;
+}
+
+.col-3-custom {
+    width: 30vw;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+.sans-serif-custom {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
 }
