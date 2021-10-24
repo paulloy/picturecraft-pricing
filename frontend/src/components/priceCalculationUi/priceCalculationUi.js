@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './price-calculation-ui.css';
 
 class Paper {
+    id;
     name;
     width;
     length;
@@ -9,7 +11,8 @@ class Paper {
     area;
     paperCostPerUnitArea;
 
-    constructor(name=name, width=width, length=length, rollCost=rollCost) {
+    constructor(id=id, name=name, width=width, length=length, rollCost=rollCost) {
+        this.id = id;
         this.name = name;
         this.width = width;
         this.length = length;
@@ -33,10 +36,13 @@ export default function PriceCalculationUi() {
         vat: 0
     });
 
-    const [papers, SetPapers] = useState([
-        new Paper("Photo Lustre", 44, 1181.102, 282),
-        new Paper("Hemp Paper", 44, 1181.102, 350)
-    ]);
+    const [papers, setPapers] = useState([]);
+
+    axios.get("http://localhost:4000/api/paper")
+        .then((res) => {
+            setPapers(res.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost)))
+        })
+        .catch(error => console.log(error));
 
     const [selectedPaper, setSelectedPaper] = useState(null);
 
