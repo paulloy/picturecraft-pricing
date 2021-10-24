@@ -8,15 +8,17 @@ class Paper {
     width;
     length;
     rollCost;
+    description;
     area;
     paperCostPerUnitArea;
 
-    constructor(id=id, name=name, width=width, length=length, rollCost=rollCost) {
+    constructor(id=id, name=name, width=width, length=length, rollCost=rollCost, description=description) {
         this.id = id;
         this.name = name;
         this.width = width;
         this.length = length;
         this.rollCost = rollCost;
+        this.description = description;
         this.area = width * length;
         this.paperCostPerUnitArea = rollCost / (width * length);
     }
@@ -40,7 +42,7 @@ export default function PriceCalculationUi() {
 
     axios.get("http://localhost:4000/api/paper")
         .then((res) => {
-            setPapers(res.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost)))
+            setPapers(res.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)))
         })
         .catch(error => console.log(error));
 
@@ -127,7 +129,7 @@ export default function PriceCalculationUi() {
                                 ))}
                         </select>
                         <img className="img" src="https://www.blueskyprinting.co.uk/app/uploads/2021/02/giclee-fine-art-print-japan.jpg" alt="temp foto" />
-                        <p className="p-2 sans-serif-custom">Wedding, portrait and fine art photographers traditionally use luster paper for their photos for first-class results.</p>
+                        <p className="p-2 sans-serif-custom">{selectedPaper ? selectedPaper.description : null}</p>
                     </div>
                     <div className="col-3-custom p-4 glass-morphism">
                         <span className="d-flex justify-content-between align-items-center border-b-double mb-3 p-0">

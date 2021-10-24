@@ -14,6 +14,9 @@ const PaperSchema = new Schema({
     },
     cost: {
         type: Number,
+    },
+    description: {
+        type: String,
     }
 });
 
