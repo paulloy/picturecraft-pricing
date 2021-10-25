@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import './price-calculation-ui.css';
+import ImageDimensions from './imageDimensions';
 
+// Paper model
 class Paper {
+    // Axios request data
     id;
     name;
     width;
     length;
     rollCost;
     description;
+    // 
     area;
     paperCostPerUnitArea;
 
@@ -24,8 +28,11 @@ class Paper {
     }
 }
 
+export const DimensionsContext = createContext();
+
 export default function PriceCalculationUi() {
 
+    // STATE
     const [dimensions, setDimensions] = useState({
         unit: 'inches',
         width: 0,
@@ -79,40 +86,11 @@ export default function PriceCalculationUi() {
         <div className="container-fluid">
             <div className="row d-flex justify-content-center flex-column">
                 <span className="col-12 d-flex">
-                    <div className="p-4 col-3-custom glass-morphism">
-                        <span className="d-flex justify-content-between align-items-center border-b-double mb-3">
-                            <h4 className="align-left m-0">Step 1 - Image Dimensions</h4>
-                            <button className="settings"><i class="fas fa-cog"></i></button>
-                        </span>
-                        <span className="d-flex img-dimension">
-                            <select 
-                                className="form-select form-select-lg mb-3" 
-                                name="dimension-selector" 
-                                id="dimension-selector" 
-                                onChange={(e) => setDimensions({unit: e.target.value, width: 0, length: 0, qty: 1})}>
-                                    <option value="inches">inches</option>
-                                    <option value="cm">cm</option>
-                            </select>
-                        </span>
-                        <hr className="m-0 mb-4 mt-2"/>
-                        <span className="d-flex img-dimension">
-                            <label className="mx-3 col-4" htmlFor="">Width</label>
-                            <input className="col-6" type="number" step="0.01" min="0" max="10000" value={dimensions.width} onChange={(e) => setDimensions({...dimensions, width: e.target.value})}/>
-                            <span className="mx-3 col-4">{dimensions.unit}</span>
-                        </span>
-                        <span className="d-flex p-2 img-dimension">
-                            <label className="mx-3 col-4" htmlFor="">Length</label>
-                            <input className="col-6" type="number" step="0.01" min="0" max="10000" value={dimensions.length} onChange={(e) => setDimensions({...dimensions, length: e.target.value})}/>
-                            <span className="mx-3 col-4">{dimensions.unit}</span>
-                        </span>
-                        <hr />
-                        <span className="d-flex p-2 align-items-center justify-content-center qty">
-                            <label htmlFor="">Quantity</label>
-                            <button className="btn btn-secondary" onClick={() => setDimensions({...dimensions, qty: dimensions.qty - 1})}><i class="fas fa-chevron-left"></i></button>
-                            <input className="text-right" type="number" step="1" min="1" max="1000" value={dimensions.qty} onChange={(e) => setDimensions({...dimensions, qty: e.target.value})}/>
-                            <button className="btn btn-secondary" onClick={() => setDimensions({...dimensions, qty: dimensions.qty + 1})}><i class="fas fa-chevron-right"></i></button>
-                        </span>
-                    </div>
+                    
+                    <DimensionsContext.Provider value={{dimensions, setDimensions}}>
+                        <ImageDimensions/>
+                    </DimensionsContext.Provider>
+
                     <div className="col-3-custom p-4 glass-morphism">
                         <span className="d-flex justify-content-between align-items-center border-b-double mb-3">
                             <h4 className="align-left m-0">Step 2 - Your Paper</h4>
