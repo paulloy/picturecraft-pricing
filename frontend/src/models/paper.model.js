@@ -1,25 +1,21 @@
-export class Paper {
+export default class Paper {
     id;
     name;
-    length_cm;
-    width_cm;
-    length_inch;
-    width_inch;
-    cost;
-    costPerUnitArea_cm;
-    costPerUnitArea_inch;
+    width;
+    length;
+    rollCost;
+    description;
+    area;
+    paperCostPerUnitArea;
 
-    constructor(id, name, length, width, cost) {
-        const conversionValue = 0.3937007874;
+    constructor(id=id, name=name, width=width, length=length, rollCost=rollCost, description=description) {
         this.id = id;
         this.name = name;
-        this.length_cm = length;
-        this.width_cm = width;
-        this.length_inch = length * conversionValue;
-        this.width_inch = width * conversionValue;
-        this.cost = cost;
-        this.costPerUnitArea_cm = cost / (length * width);
-        this.costPerUnitArea_inch = cost / ((conversionValue**2) * (length * width));
+        this.width = width;
+        this.length = length;
+        this.rollCost = rollCost;
+        this.description = description;
+        this.area = width * length;
+        this.paperCostPerUnitArea = rollCost / (width * length);
     }
-    // by default all lengths are saved in cm
 }
