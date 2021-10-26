@@ -5,6 +5,7 @@ import ImageDimensions from './imageDimensions';
 import Paper from './../../models/paper.model';
 import PaperSelector from './paperSelector';
 import OrderDetails from './orderDetails';
+import Cart from './Cart';
 
 export const DimensionsContext = createContext();
 
@@ -17,12 +18,17 @@ export default function PriceCalculationUi() {
         qty: 1
     });
 
-    const [costs, setCosts] = useState({
-        total: 0,
-        vat: 0
-    });
-
     const [papers, setPapers] = useState([]);
+
+    const [orderDetails, setOrderDetails] = useState({
+        imgWidth: 0,
+        imgLength: 0,
+        imgUnit: dimensions.unit,
+        imgQty: 1,
+        imgType: 'Please select paper',
+        imgVat: 0.00,
+        imgTotal: 0.00
+    });
 
     axios.get("http://localhost:4000/api/paper")
         .then((res) => {
@@ -43,9 +49,14 @@ export default function PriceCalculationUi() {
         // 
         const subTotal = ((((width * length) * paperCostPerUnitArea) + ((width * length) * inkCostPerUnitArea)) * pp) * qty;
         const vat = subTotal * 0.2;
-        setCosts({
-            total: (vat + subTotal).toFixed(2),
-            vat: vat.toFixed(2)
+        setOrderDetails({
+            imgWidth: width,
+            imgLength: length,
+            imgUnit: dimensions.unit,
+            imgQty: qty,
+            imgType: selectedPaper.name,
+            imgVat: vat.toFixed(2),
+            imgTotal: (vat + subTotal).toFixed(2)
         });
     }
 
@@ -56,20 +67,18 @@ export default function PriceCalculationUi() {
     return (
         <div className="container-fluid">
             <div className="row d-flex justify-content-center flex-column">
-                <span className="col-12 d-flex">
-                    
+                <span className="col-12 d-flex">                    
                     <DimensionsContext.Provider value={{dimensions, setDimensions}}>
                         <ImageDimensions/>
                     </DimensionsContext.Provider>
-
                     <PaperSelector 
                         papers={papers} 
                         selectedPaper={selectedPaper} 
                         getSelectedPaper={(e) => setSelectedPaper(papers.filter(paper => paper.name === e.target.value)[0])}/>
-
-                    <OrderDetails dimensions={dimensions} costs={costs} />
+                    <OrderDetails orderDetails={orderDetails} />
                 </span>
             </div>
+            <Cart />
         </div>
     );
 }
