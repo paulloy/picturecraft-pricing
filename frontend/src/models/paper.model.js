@@ -8,7 +8,7 @@ export default class Paper {
     area;
     paperCostPerUnitArea;
 
-    constructor(id=id, name=name, width=width, length=length, rollCost=rollCost, description=description) {
+    constructor(id, name, width, length, rollCost, description) {
         this.id = id;
         this.name = name;
         this.width = width;
