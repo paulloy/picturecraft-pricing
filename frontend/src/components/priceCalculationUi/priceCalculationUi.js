@@ -26,17 +26,22 @@ export default function PriceCalculationUi() {
         imgUnit: dimensions.unit,
         imgQty: 1,
         imgType: 'Please select paper',
-        imgVat: 0.00,
-        imgTotal: 0.00
+        imgVat: '0.00',
+        imgTotal: '0.00'
     });
 
-    axios.get("http://localhost:4000/api/paper")
-        .then((res) => {
-            setPapers(res.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)))
-        })
-        .catch(error => console.log(error));
+    const getPapers = () => {
+        axios.get("http://localhost:4000/api/paper")
+            .then((res) => {
+                setPapers(res.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)))
+            })
+            .catch(error => console.log(error));
+    }
+    useEffect(() => getPapers(), []);
 
     const [selectedPaper, setSelectedPaper] = useState(null);
+
+    const [myCart, setMyCart] = useState([]);
 
     const calculateTotal = () => {
         if (!selectedPaper) return;
@@ -75,10 +80,10 @@ export default function PriceCalculationUi() {
                         papers={papers} 
                         selectedPaper={selectedPaper} 
                         getSelectedPaper={(e) => setSelectedPaper(papers.filter(paper => paper.name === e.target.value)[0])}/>
-                    <OrderDetails orderDetails={orderDetails} />
+                    <OrderDetails orderDetails={orderDetails} addCartItem={(newCartItem) => setMyCart([...myCart, newCartItem])}/>
                 </span>
             </div>
-            <Cart />
+            <Cart myCart={myCart}/>
         </div>
     );
 }

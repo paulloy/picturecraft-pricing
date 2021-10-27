@@ -1,4 +1,4 @@
-export default function OrderDetails({ orderDetails }) {
+export default function OrderDetails({ orderDetails, addCartItem = f => f }) {
     const {
         imgWidth,
         imgLength,
@@ -41,7 +41,7 @@ export default function OrderDetails({ orderDetails }) {
             </div>
             <hr />
             <div className="row mt-5">
-                <button className="btn btn-primary">Add to Cart</button>
+                <button onClick={() => addCartItem(orderDetails)} className="btn btn-primary">Add to Cart</button>
             </div>
         </div>
     );
