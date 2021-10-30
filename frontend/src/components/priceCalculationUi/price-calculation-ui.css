@@ -90,3 +90,14 @@
     border-radius: 10px;
     font-size: 1.2rem !important;
 }
+
+.my-cart {
+    width: 100%;
+    border: 1px solid black;
+}
+.my-cart tr th {
+    border: 1px solid black;
+}
+.my-cart tr td {
+    text-align: center;
+}

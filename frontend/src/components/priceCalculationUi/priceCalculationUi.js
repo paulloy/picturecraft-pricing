@@ -42,6 +42,33 @@ export default function PriceCalculationUi() {
     const [selectedPaper, setSelectedPaper] = useState(null);
 
     const [myCart, setMyCart] = useState([]);
+    const [grandTotals, setGrandTotals] = useState({
+        subTotal: '0.00',
+        vat: '0.00',
+        grandTotal: '0.00'
+    });
+
+    // When a new order is added to the cart, update the grandTotals
+    useEffect(() => {
+        // initialise as 0 each time.
+        let subTotal = 0;
+        let vat = 0;
+        let grandTotal = 0;
+       
+        // loop through cart for order details
+        myCart.forEach(cartItem => {
+            subTotal = Number(subTotal) + Number(cartItem.imgSubTotal);
+            vat = Number(vat) + Number(cartItem.imgVat);
+            grandTotal = Number(grandTotal) + Number(cartItem.imgTotal);
+        });
+
+        setGrandTotals({
+            subTotal: subTotal.toFixed(2),
+            vat: vat.toFixed(2),
+            grandTotal: grandTotal.toFixed(2)
+        });
+
+    }, [myCart]);
 
     const calculateTotal = () => {
         if (!selectedPaper) return;
@@ -60,6 +87,7 @@ export default function PriceCalculationUi() {
             imgUnit: dimensions.unit,
             imgQty: qty,
             imgType: selectedPaper.name,
+            imgSubTotal: subTotal.toFixed(2),
             imgVat: vat.toFixed(2),
             imgTotal: (vat + subTotal).toFixed(2)
         });
@@ -83,7 +111,13 @@ export default function PriceCalculationUi() {
                     <OrderDetails orderDetails={orderDetails} addCartItem={(newCartItem) => setMyCart([...myCart, newCartItem])}/>
                 </span>
             </div>
-            <Cart myCart={myCart}/>
+            <Cart 
+                myCart={myCart} 
+                grandTotals={grandTotals} 
+                removeCartItem={(e) => {
+                    const arr = myCart.filter(cartItem => cartItem !== e);
+                    setMyCart(arr);
+                }}/>
         </div>
     );
 }
