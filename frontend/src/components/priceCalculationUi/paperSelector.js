@@ -4,7 +4,6 @@ export default function PaperSelector({ papers, selectedPaper, getSelectedPaper 
         <div className="col-3-custom p-4 glass-morphism">
             <span className="d-flex justify-content-between align-items-center border-b-double mb-3">
                 <h4 className="align-left m-0">Step 2 - Your Paper</h4>
-                <button className="settings"><i class="fas fa-cog"></i></button>
             </span>
             <select 
                 className="form-select form-select-lg mb-3" 

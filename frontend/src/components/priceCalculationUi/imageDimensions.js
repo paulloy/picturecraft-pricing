@@ -9,7 +9,6 @@ export default function ImageDimensions() {
             {/* Heading and settings button */}
             <span className="d-flex justify-content-between align-items-center border-b-double mb-3">
                 <h4 className="align-left m-0">Step 1 - Image Dimensions</h4>
-                <button className="settings"><i class="fas fa-cog"></i></button>
             </span>
             {/* dimension selector */}
             <span className="d-flex img-dimension">
