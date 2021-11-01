@@ -4,6 +4,7 @@ import Paper from '../../models/paper.model';
 import PaperTable from './PaperTable';
 import AddPaper from './AddPaper';
 import UpdatePaper from './UpdatePaper';
+import Consts from './Consts';
 
 export default function Settings() {
 
@@ -22,6 +23,7 @@ export default function Settings() {
 
     return (
         <>
+            <Consts />
             <AddPaper />
             <UpdatePaper paper={updatePaper} />
             { 
