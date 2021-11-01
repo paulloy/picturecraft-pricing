@@ -17,6 +17,8 @@ export default function Settings() {
     }
     useEffect(() => getPapers(), []);
 
+    const [updatePaper, setUpdatePaper] = useState('please select a paper');
+
     return (
         <>
             <AddPaper />
