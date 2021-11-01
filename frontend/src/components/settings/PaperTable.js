@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState } from 'react';
+import UpdatePaper from "./UpdatePaper";
 
-export default function PaperTable({ papers }) {
+export default function PaperTable({ papers, updatePaper = f => f }) {
     const deletePaper = (e, paperId) => {
         e.preventDefault()
         axios.delete(`http://localhost:4000/api/paper/delete/${paperId}`);
@@ -34,7 +35,7 @@ export default function PaperTable({ papers }) {
                             <td className="p-3 text-center">{paper.length}cm</td>
                             <td className="p-3 text-center">£{paper.rollCost.toFixed(2)}</td>
                             <td className="p-3 text-center">{paper.description}</td>
-                            <td className="p-2 text-center"><button className="btn btn-secondary">Update</button></td>
+                            <td className="p-2 text-center"><button className="btn btn-secondary" onClick={() => updatePaper(paper)}>Update</button></td>
                             <td><button className="btn btn-danger" onClick={(e) => deletePaper(e, paper.id)}>Delete</button></td>
                         </tr>
                     ))}

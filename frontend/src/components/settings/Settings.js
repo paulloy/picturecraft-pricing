@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Paper from '../../models/paper.model';
 import PaperTable from './PaperTable';
 import AddPaper from './AddPaper';
+import UpdatePaper from './UpdatePaper';
 
 export default function Settings() {
 
@@ -22,10 +23,11 @@ export default function Settings() {
     return (
         <>
             <AddPaper />
+            <UpdatePaper paper={updatePaper} />
             { 
                 !papers.length 
                 ? <h1 className="glass-morphism text-center p-3"><i className="fas fa-spinner fa-pulse"></i> Loading</h1> 
-                : <PaperTable papers={papers} /> 
+                : <PaperTable papers={papers} updatePaper={(e) => setUpdatePaper(e)}/> 
             }
         </>
     );
