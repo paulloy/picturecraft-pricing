@@ -20,17 +20,27 @@ export default function Settings() {
     useEffect(() => getPapers(), []);
 
     const [updatePaper, setUpdatePaper] = useState('please select a paper');
+    const [subPages, setSubPages] = useState('default');
+
+    const setOurSubPages = pageName => {
+        if (pageName === 'consts') return <Consts />;
+        else if (pageName === 'addPaper') return <AddPaper />;
+        else if (pageName === 'updatePaper') return <UpdatePaper paper={updatePaper} />
+        else if (pageName === 'viewPapers') return <PaperTable papers={papers} updatePaper={(e) => {
+            setUpdatePaper(e);
+            setSubPages('updatePaper');
+        }}/>
+        else return <h1 className="glass-morphism mx-5 text-center p-3">Select an option</h1>
+    }
 
     return (
         <>
-            <Consts />
-            <AddPaper />
-            <UpdatePaper paper={updatePaper} />
-            { 
-                !papers.length 
-                ? <h1 className="glass-morphism text-center p-3"><i className="fas fa-spinner fa-pulse"></i> Loading</h1> 
-                : <PaperTable papers={papers} updatePaper={(e) => setUpdatePaper(e)}/> 
-            }
+            <nav className="d-flex glass-morphism justify-content-center mx-5 p-3">
+                <button className="btn btn-secondary mx-3" onClick={() => setSubPages('consts')}>Update Ink/P.P</button>
+                <button className="btn btn-secondary mx-3" onClick={() => setSubPages('addPaper')}>Add a new Paper</button>
+                <button className="btn btn-secondary mx-3" onClick={() => setSubPages('viewPapers')}>View Papers</button>
+            </nav>
+            {setOurSubPages(subPages)}
         </>
     );
 }
