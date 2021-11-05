@@ -19,6 +19,7 @@ export default function PriceCalculationUi() {
     });
 
     const [papers, setPapers] = useState([]);
+    const [consts, setConsts] = useState(null);
 
     const [orderDetails, setOrderDetails] = useState({
         imgWidth: 0,
@@ -31,10 +32,14 @@ export default function PriceCalculationUi() {
     });
 
     const getPapers = () => {
-        axios.get("http://localhost:4000/api/paper")
-            .then((res) => {
-                setPapers(res.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)))
-            })
+        const req1 = axios.get("http://localhost:4000/api/paper");
+        const req2 = axios.get("http://localhost:4000/api/ink");
+
+        axios.all([req1, req2])
+            .then(axios.spread((res1, res2) => {
+                setPapers(res1.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)));
+                setConsts(res2.data);
+            }))
             .catch(error => console.log(error));
     }
     useEffect(() => getPapers(), []);
@@ -73,11 +78,16 @@ export default function PriceCalculationUi() {
     const calculateTotal = () => {
         if (!selectedPaper) return;
 
-        const { width, length, qty } = dimensions;
+        let { width, length, qty } = dimensions;
         // temporary values
-        const inkCostPerUnitArea = 0.002902;
+        let inkCostPerUnitArea = consts.inkCostPerUnitSquareInch;
+        // convert cm to inches
+        if (dimensions.unit !== 'inches') {
+            width = width * 0.393701;
+            length = length * 0.393701;
+        }
         const paperCostPerUnitArea = selectedPaper.paperCostPerUnitArea;
-        const pp = 2.6;
+        const pp = consts.profitPercentage * 0.01;
         // 
         const subTotal = ((((width * length) * paperCostPerUnitArea) + ((width * length) * inkCostPerUnitArea)) * pp) * qty;
         const vat = subTotal * 0.2;
