@@ -1,5 +1,5 @@
 export default function OrderDetails({ orderDetails, addCartItem = f => f }) {
-    const {
+    let {
         imgWidth,
         imgLength,
         imgUnit,
@@ -16,11 +16,11 @@ export default function OrderDetails({ orderDetails, addCartItem = f => f }) {
             </span>
             <div className="row">
                 <div className="col-6 text-right"><strong>Width</strong></div>
-                <div className="col-6">{imgWidth} {imgUnit}</div>
+                <div className="col-6">{imgUnit === 'inches' ? imgWidth : imgWidth = (imgWidth * 2.54).toFixed(2)} {imgUnit}</div>
             </div>
             <div className="row">
                 <div className="col-6 text-right"><strong>Length</strong></div>
-                <div className="col-6">{imgLength} {imgUnit}</div>
+                <div className="col-6">{imgUnit === 'inches' ? imgLength : imgLength = (imgLength * 2.54).toFixed(2)} {imgUnit}</div>
             </div>
             <div className="row">
                 <div className="col-6 text-right"><strong>Paper Type</strong></div>
