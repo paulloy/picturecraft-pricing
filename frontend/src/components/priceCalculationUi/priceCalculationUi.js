@@ -31,18 +31,18 @@ export default function PriceCalculationUi() {
         imgTotal: '0.00'
     });
 
-    const getPapers = () => {
-        const req1 = axios.get("http://localhost:4000/api/paper");
-        const req2 = axios.get("http://localhost:4000/api/ink");
-
-        axios.all([req1, req2])
+    const getInitData = () => {
+        axios.all([
+                axios.get("http://localhost:5000/api/paper"),
+                axios.get("http://localhost:5000/api/ink")
+            ])
             .then(axios.spread((res1, res2) => {
                 setPapers(res1.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)));
                 setConsts(res2.data);
             }))
             .catch(error => console.log(error));
     }
-    useEffect(() => getPapers(), []);
+    useEffect(() => getInitData(), []);
 
     const [selectedPaper, setSelectedPaper] = useState(null);
 

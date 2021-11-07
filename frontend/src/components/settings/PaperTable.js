@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from 'react';
-import UpdatePaper from "./UpdatePaper";
 
 export default function PaperTable({ papers, updatePaper = f => f }) {
     const deletePaper = (e, paperId) => {

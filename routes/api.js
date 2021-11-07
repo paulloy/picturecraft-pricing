@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Paper = require('../models/paper');
+const Ink = require('../models/ink');
 
 // GET
 // Get all paper
@@ -51,6 +52,22 @@ router.delete('/paper/delete/:id', function(req, res, next){
         } else {
             console.log(error);
         }
+    });
+});
+
+// GET INK
+router.get('/ink', function(req, res, next) {
+    Ink.findOne({_id: '6164945ae7456e018cfbc0a1'}).then(function(ink) {
+        res.send(ink);
+    }).catch(next);
+});
+
+// UPDATE INK
+router.put('/ink/update', function(req, res, next){
+    Ink.findOneAndUpdate({_id: '6164945ae7456e018cfbc0a1'},req.body).then(function(paper) {
+        Ink.findOne({_id: '6164945ae7456e018cfbc0a1'}).then(function(ink) {
+            res.send(ink);
+        });
     });
 });
 

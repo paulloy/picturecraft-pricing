@@ -4,9 +4,15 @@ const Schema = mongoose.Schema;
 // create student schema & model
 const InkSchema = new Schema({
     cost: {
-        type: Number,
+        type: Number
     },
     volume: {
+        type: Number
+    },
+    profitPercentage: {
+        type: Number
+    },
+    inkCostPerUnitSquareInch: {
         type: Number
     }
 });
