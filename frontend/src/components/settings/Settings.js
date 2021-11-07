@@ -11,7 +11,7 @@ export default function Settings() {
     const [papers, setPapers] = useState([]);
 
     const getPapers = () => {
-        axios.get("http://localhost:4000/api/paper")
+        axios.get("/api/paper")
             .then((res) => {
                 setPapers(res.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)))
             })

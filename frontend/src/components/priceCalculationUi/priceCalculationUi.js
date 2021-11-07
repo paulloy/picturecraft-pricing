@@ -33,8 +33,8 @@ export default function PriceCalculationUi() {
 
     const getInitData = () => {
         axios.all([
-                axios.get("http://localhost:5000/api/paper"),
-                axios.get("http://localhost:5000/api/ink")
+                axios.get("/api/paper"),
+                axios.get("/api/ink")
             ])
             .then(axios.spread((res1, res2) => {
                 setPapers(res1.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)));

@@ -4,7 +4,7 @@ import { useState } from 'react';
 export default function PaperTable({ papers, updatePaper = f => f }) {
     const deletePaper = (e, paperId) => {
         e.preventDefault()
-        axios.delete(`http://localhost:4000/api/paper/delete/${paperId}`);
+        axios.delete(`/api/paper/delete/${paperId}`);
         const refreshPapers = ourPapers.filter(paper => paper.id !== paperId);
         setOurPapers(refreshPapers);
     }

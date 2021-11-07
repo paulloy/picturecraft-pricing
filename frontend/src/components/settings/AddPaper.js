@@ -10,7 +10,7 @@ export default function AddPaper() {
 
     const onSubmitPaper = e => {
         e.preventDefault();
-        axios.post('http://localhost:4000/api/paper/create', {
+        axios.post('/api/paper/create', {
             name: name.current.value,
             width: width.current.value,
             length: length.current.value,

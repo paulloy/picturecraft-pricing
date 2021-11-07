@@ -5,7 +5,7 @@ export default function Consts() {
     const [consts, setConsts] = useState(null);
 
     useEffect(() => {
-        axios.get("http://localhost:4000/api/ink")
+        axios.get("/api/ink")
              .then((res) => {
                  setConsts(res.data);
              })
@@ -14,7 +14,7 @@ export default function Consts() {
 
     const updateValues = e => {
         e.preventDefault();
-        axios.put('http://localhost:4000/api/ink/update', consts);
+        axios.put('/api/ink/update', consts);
     }
 
     return (

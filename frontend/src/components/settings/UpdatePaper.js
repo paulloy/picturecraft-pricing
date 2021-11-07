@@ -14,7 +14,7 @@ export default function UpdatePaper({ paper }) {
 
     const onUpdatePaper = e => {
         e.preventDefault();
-        axios.put(`http://localhost:4000/api/paper/${ourPaper.id}`, {
+        axios.put(`/api/paper/${ourPaper.id}`, {
             name: name.current.value,
             width: width.current.value,
             length: length.current.value,
