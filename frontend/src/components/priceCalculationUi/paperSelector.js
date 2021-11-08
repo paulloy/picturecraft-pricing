@@ -16,7 +16,7 @@ export default function PaperSelector({ papers, selectedPaper, getSelectedPaper 
                     ))}
             </select>
             <img className="img" src="https://www.blueskyprinting.co.uk/app/uploads/2021/02/giclee-fine-art-print-japan.jpg" alt="temp foto" />
-            <p className="p-2 sans-serif-custom">{selectedPaper ? selectedPaper.description : null}</p>
+            {/* <p className="p-2 sans-serif-custom">{selectedPaper ? selectedPaper.description : null}</p> */}
         </div>
     );
 }
