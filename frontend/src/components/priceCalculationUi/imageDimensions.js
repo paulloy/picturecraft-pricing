@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { DimensionsContext } from "./priceCalculationUi";
 
 export default function ImageDimensions() {
-    const [dimensions, setDimensions] = useContext(DimensionsContext);
+    const {dimensions, setDimensions} = useContext(DimensionsContext);
 
     return (
         <div className="p-4 col-3-custom glass-morphism">
