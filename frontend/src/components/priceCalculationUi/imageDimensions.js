@@ -1,12 +1,8 @@
-import { useContext, useReducer } from "react";
+import { useContext } from "react";
 import { DimensionsContext } from "./priceCalculationUi";
 
 export default function ImageDimensions() {
-    const data = useContext(DimensionsContext);
-    const [dimensions, setDimensions] = useReducer((dimensions, newData) => (
-            {...dimensions, ...newData}),
-            data
-        );
+    const [dimensions, setDimensions] = useContext(DimensionsContext);
 
     return (
         <div className="p-4 col-3-custom glass-morphism">
@@ -36,7 +32,7 @@ export default function ImageDimensions() {
                     min="0" 
                     max="10000" 
                     value={dimensions.width} 
-                    onChange={(e) => setDimensions({width: e.target.value})}/>
+                    onChange={(e) => setDimensions({...dimensions, width: e.target.value})}/>
                 <span className="mx-3 col-4">{dimensions.unit}</span>
             </span>
             {/* length input */}
@@ -49,7 +45,7 @@ export default function ImageDimensions() {
                     min="0" 
                     max="10000" 
                     value={dimensions.length} 
-                    onChange={(e) => setDimensions({length: e.target.value})}/>
+                    onChange={(e) => setDimensions({...dimensions, length: e.target.value})}/>
                 <span className="mx-3 col-4">{dimensions.unit}</span>
             </span>
             <hr />
@@ -58,7 +54,7 @@ export default function ImageDimensions() {
                 <label htmlFor="">Quantity</label>
                 <button
                     className="btn btn-secondary" 
-                    onClick={() => setDimensions({qty: dimensions.qty - 1})}>
+                    onClick={() => setDimensions({...dimensions, qty: dimensions.qty - 1})}>
                      <i class="fas fa-chevron-left"></i>
                 </button>
                 <input 
@@ -68,10 +64,10 @@ export default function ImageDimensions() {
                     min="1" 
                     max="1000" 
                     value={dimensions.qty} 
-                    onChange={(e) => setDimensions({qty: Number(e.target.value)})}/>
+                    onChange={(e) => setDimensions({...dimensions, qty: Number(e.target.value)})}/>
                 <button 
                     className="btn btn-secondary" 
-                    onClick={() => setDimensions({qty: dimensions.qty + 1})}>
+                    onClick={() => setDimensions({...dimensions, qty: dimensions.qty + 1})}>
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </span>
