@@ -10,6 +10,7 @@ export default function PaperSelector({ papers, selectedPaper, getSelectedPaper 
                 name="paper-selector" 
                 id="paper-selector" 
                 onChange={(e) => getSelectedPaper(e)}>
+                    {/* If paper is loading then display loading icon */}
                     <option className="d-none" value="not a value">Please select paper</option>
                     {papers.map(paper => (
                         <option value={paper.name}>{paper.name}</option>

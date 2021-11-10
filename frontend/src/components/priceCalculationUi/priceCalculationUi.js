@@ -18,8 +18,16 @@ export default function PriceCalculationUi() {
         qty: 1
     });
 
-    const [papers, setPapers] = useState([]);
-    const [consts, setConsts] = useState(null);
+    const [papers, setPapers] = useState([
+        {
+            name: 'Photo Lustre',
+            cost: 9.6
+        },        
+        {
+            name: 'Fine Art Etching',
+            cost: 22
+        }
+    ]);
 
     const [orderDetails, setOrderDetails] = useState({
         imgWidth: 0,
@@ -31,18 +39,18 @@ export default function PriceCalculationUi() {
         imgTotal: '0.00'
     });
 
-    const getInitData = () => {
-        axios.all([
-                axios.get("/api/paper"),
-                axios.get("/api/ink")
-            ])
-            .then(axios.spread((res1, res2) => {
-                setPapers(res1.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)));
-                setConsts(res2.data);
-            }))
-            .catch(error => console.log(error));
-    }
-    useEffect(() => getInitData(), []);
+    // const getInitData = () => {
+    //     axios.all([
+    //             axios.get("/api/paper"),
+    //             axios.get("/api/ink")
+    //         ])
+    //         .then(axios.spread((res1, res2) => {
+    //             setPapers(res1.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)));
+    //             setConsts(res2.data);
+    //         }))
+    //         .catch(error => console.log(error));
+    // }
+    // useEffect(() => getInitData(), []);
 
     const [selectedPaper, setSelectedPaper] = useState(null);
 
@@ -79,17 +87,16 @@ export default function PriceCalculationUi() {
         if (!selectedPaper) return;
 
         let { width, length, qty } = dimensions;
-        // temporary values
-        let inkCostPerUnitArea = consts.inkCostPerUnitSquareInch;
+        let paperCostPerUnitArea;
         // convert cm to inches
         if (dimensions.unit !== 'inches') {
             width = width * 0.393701;
             length = length * 0.393701;
+            paperCostPerUnitArea = selectedPaper.cost / 2064.512;
         }
-        const paperCostPerUnitArea = selectedPaper.paperCostPerUnitArea;
-        const pp = consts.profitPercentage * 0.01;
+        paperCostPerUnitArea = selectedPaper.cost / 320;
         // 
-        const subTotal = ((((width * length) * paperCostPerUnitArea) + ((width * length) * inkCostPerUnitArea)) * pp) * qty;
+        const subTotal = (((width * length) * paperCostPerUnitArea) * qty);
         const vat = subTotal * 0.2;
         setOrderDetails({
             imgWidth: width,
@@ -97,9 +104,9 @@ export default function PriceCalculationUi() {
             imgUnit: dimensions.unit,
             imgQty: qty,
             imgType: selectedPaper.name,
-            imgSubTotal: subTotal.toFixed(2),
+            imgSubTotal: (subTotal - vat).toFixed(2),
             imgVat: vat.toFixed(2),
-            imgTotal: (vat + subTotal).toFixed(2)
+            imgTotal: (subTotal).toFixed(2)
         });
     }
 
