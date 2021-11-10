@@ -97,7 +97,7 @@ export default function PriceCalculationUi() {
         paperCostPerUnitArea = selectedPaper.cost / 320;
         // 
         const subTotal = (((width * length) * paperCostPerUnitArea) * qty);
-        const vat = subTotal * 0.2;
+        const vat = (subTotal * 5) / 6;
         setOrderDetails({
             imgWidth: width,
             imgLength: length,
