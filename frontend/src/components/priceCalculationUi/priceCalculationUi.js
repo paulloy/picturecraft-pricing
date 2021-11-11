@@ -18,16 +18,7 @@ export default function PriceCalculationUi() {
         qty: 1
     });
 
-    const [papers, setPapers] = useState([
-        {
-            name: 'Photo Lustre',
-            cost: 9.6
-        },        
-        {
-            name: 'Fine Art Etching',
-            cost: 22
-        }
-    ]);
+    const [papers, setPapers] = useState([]);
 
     const [orderDetails, setOrderDetails] = useState({
         imgWidth: 0,
@@ -39,18 +30,14 @@ export default function PriceCalculationUi() {
         imgTotal: '0.00'
     });
 
-    // const getInitData = () => {
-    //     axios.all([
-    //             axios.get("/api/paper"),
-    //             axios.get("/api/ink")
-    //         ])
-    //         .then(axios.spread((res1, res2) => {
-    //             setPapers(res1.data.map(obj => new Paper(obj._id, obj.name, obj.width, obj.length, obj.cost, obj.description)));
-    //             setConsts(res2.data);
-    //         }))
-    //         .catch(error => console.log(error));
-    // }
-    // useEffect(() => getInitData(), []);
+    const getInitData = () => {
+        axios.get("/api/paper")
+            .then(axios.spread((res1, res2) => {
+                setPapers(res1.data);
+            }))
+            .catch(error => console.log(error));
+    }
+    useEffect(() => getInitData(), []);
 
     const [selectedPaper, setSelectedPaper] = useState(null);
 
