@@ -6,17 +6,8 @@ const PaperSchema = new Schema({
     name: {
         type: String,
     },
-    length: {
-        type: Number,
-    },
-    width: {
-        type: Number,
-    },
     cost: {
         type: Number,
-    },
-    description: {
-        type: String,
     }
 });
 
