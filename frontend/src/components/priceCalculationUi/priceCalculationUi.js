@@ -32,9 +32,9 @@ export default function PriceCalculationUi() {
 
     const getInitData = () => {
         axios.get("/api/paper")
-            .then(axios.spread((res1, res2) => {
+            .then((res1) => {
                 setPapers(res1.data);
-            }))
+            })
             .catch(error => console.log(error));
     }
     useEffect(() => getInitData(), []);
