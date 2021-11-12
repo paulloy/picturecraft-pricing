@@ -2,7 +2,6 @@ import { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import './price-calculation-ui.css';
 import ImageDimensions from './imageDimensions';
-import Paper from './../../models/paper.model';
 import PaperSelector from './paperSelector';
 import OrderDetails from './orderDetails';
 import Cart from './Cart';
