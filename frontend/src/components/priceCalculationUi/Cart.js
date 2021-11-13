@@ -28,6 +28,10 @@ export default function Cart({ myCart, grandTotals, removeCartItem = f => f }) {
                     </tbody>
                 </table>
                 <div className="d-flex mt-5 justify-content-end">
+                    <p><strong>Discount</strong></p>
+                    <p className="mx-3">£{grandTotals.discount}</p>
+                </div>
+                <div className="d-flex justify-content-end">
                     <p><strong>Sub-Total</strong></p>
                     <p className="mx-3">£{grandTotals.subTotal}</p>
                 </div>

@@ -44,7 +44,8 @@ export default function PriceCalculationUi() {
     const [grandTotals, setGrandTotals] = useState({
         subTotal: '0.00',
         vat: '0.00',
-        grandTotal: '0.00'
+        grandTotal: '0.00',
+        discount: '0.00'
     });
 
     // When a new order is added to the cart, update the grandTotals
@@ -53,18 +54,21 @@ export default function PriceCalculationUi() {
         let subTotal = 0;
         let vat = 0;
         let grandTotal = 0;
+        let discount = 0;
        
         // loop through cart for order details
         myCart.forEach(cartItem => {
             subTotal = Number(subTotal) + Number(cartItem.imgSubTotal);
             vat = Number(vat) + Number(cartItem.imgVat);
             grandTotal = Number(grandTotal) + Number(cartItem.imgTotal);
+            discount = Number(discount) + Number(cartItem.imgDiscount);
         });
 
         setGrandTotals({
             subTotal: subTotal.toFixed(2),
             vat: vat.toFixed(2),
-            grandTotal: grandTotal.toFixed(2)
+            grandTotal: grandTotal.toFixed(2),
+            discount: discount.toFixed(2)
         });
 
     }, [myCart]);
