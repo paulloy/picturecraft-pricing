@@ -73,6 +73,8 @@ export default function PriceCalculationUi() {
         if (!selectedPaper) return;
 
         let { width, length, qty } = dimensions;
+        let discount = 0;
+        let discountPercentage = '';
         let paperCostPerUnitArea;
         // convert cm to inches
         if (dimensions.unit !== 'inches') {
@@ -81,8 +83,23 @@ export default function PriceCalculationUi() {
             paperCostPerUnitArea = selectedPaper.cost / 2064.512;
         }
         paperCostPerUnitArea = selectedPaper.cost / 320;
-        // 
-        const subTotal = (((width * length) * paperCostPerUnitArea) * qty);
+        
+        let subTotal = (((width * length) * paperCostPerUnitArea) * qty);
+
+        if (qty >= 50) {
+            discount = subTotal * 0.2;
+            subTotal = subTotal - discount;
+            discountPercentage = '20';
+        } else if (qty >= 20) {
+            discount = subTotal * 0.1;
+            subTotal = subTotal - discount;
+            discountPercentage = '10';
+        } else if (qty >= 10) {
+            discount = subTotal * 0.05;
+            subTotal = subTotal - discount;
+            discountPercentage = '5';
+        }
+
         const vat = subTotal / 6;
         setOrderDetails({
             imgWidth: width,
@@ -92,7 +109,9 @@ export default function PriceCalculationUi() {
             imgType: selectedPaper.name,
             imgSubTotal: ((subTotal * 5) / 6).toFixed(2),
             imgVat: vat.toFixed(2),
-            imgTotal: (subTotal).toFixed(2)
+            imgTotal: (subTotal).toFixed(2),
+            imgDiscount: discount.toFixed(2),
+            imgDiscountPercentage: discountPercentage
         });
     }
 

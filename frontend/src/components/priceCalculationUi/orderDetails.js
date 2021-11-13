@@ -6,7 +6,9 @@ export default function OrderDetails({ orderDetails, addCartItem = f => f }) {
         imgQty,
         imgType,
         imgVat,
-        imgTotal
+        imgTotal,
+        imgDiscount,
+        imgDiscountPercentage
     } = orderDetails;
 
     return (
@@ -31,6 +33,14 @@ export default function OrderDetails({ orderDetails, addCartItem = f => f }) {
                 <div className="col-6">{imgQty}</div>
             </div>
             <hr />
+            {
+                imgDiscount == 0 
+                ? null
+                : <div className="row">
+                    <div className="col-6 text-right"><strong>Discount of {imgDiscountPercentage}%</strong></div>
+                    <div className="col-6">£{imgDiscount}</div>
+                </div>
+            }
             <div className="row">
                 <div className="col-6 text-right"><strong>VAT</strong></div>
                 <div className="col-6">£{imgVat}</div>
