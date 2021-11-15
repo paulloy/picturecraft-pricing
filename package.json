@@ -7,7 +7,14 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "loader": "^2.1.1",
-    "mongoose": "^6.0.12"
+    "mongoose": "^6.0.12",
+    "react-alert": "^7.0.3",
+    "react-alert-template-basic": "^1.0.2",
+    "react-redux": "^7.2.6",
+    "react-transition-group": "^4.4.2",
+    "redux": "^4.1.2",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.0"
   },
   "scripts": {
     "start": "node server.js",
