@@ -11,7 +11,7 @@ export default function Cart({ myCart, grandTotals, removeCartItem = f => f }) {
                             <th className="text-center p-2">Length</th>
                             <th className="text-center p-2">Quantity</th>
                             <th className="text-center p-2">Total</th>
-                            <th className="bg-dark"></th>
+                            <th />
                         </tr>
                     </thead>
                     <tbody>
@@ -22,7 +22,7 @@ export default function Cart({ myCart, grandTotals, removeCartItem = f => f }) {
                             <td>{cartItem.imgLength} {cartItem.imgUnit}</td>
                             <td>{cartItem.imgQty}</td>
                             <td>£{cartItem.imgTotal}</td>
-                            <td><button onClick={() => removeCartItem(cartItem)} className="btn btn-danger">Remove</button></td>
+                            <td><button onClick={() => removeCartItem(cartItem)} className="btn btn-danger btn-sm">Remove</button></td>
                         </tr>
                         ))}
                     </tbody>

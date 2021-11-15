@@ -20,7 +20,7 @@ export default function UpdatePaper({ paper }) {
 
     
     return (        
-        <form className="row mx-5 glass-morphism p-3" onSubmit={e => onUpdatePaper(e)}>
+        <form className="row flex-column align-items-center mb-5 mx-5 glass-morphism p-3" onSubmit={e => onUpdatePaper(e)}>
             <h2 className="col-12 text-center">Update Paper</h2>
 
             <div className="col-6 px-5 d-flex flex-column">

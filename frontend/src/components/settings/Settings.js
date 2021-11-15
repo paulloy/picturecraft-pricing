@@ -1,21 +1,22 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import PaperTable from './PaperTable';
 import AddPaper from './AddPaper';
 import UpdatePaper from './UpdatePaper';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPapers } from '../../actions/papers';
 
 export default function Settings() {
+    // Connect to store
+    const dispatch = useDispatch();
+    const getPapersData = useSelector(state => state.papers.papers);
 
+    // Initialise papers as an empty array
     const [papers, setPapers] = useState([]);
 
-    const getPapers = () => {
-        axios.get("/api/paper")
-            .then((res) => {
-                setPapers(res.data)
-            })
-            .catch(error => console.log(error));
-    }
-    useEffect(() => getPapers(), []);
+    useEffect(() => {
+        dispatch(getPapers());
+        setPapers(getPapersData);
+    }, []);  
 
     const [updatePaper, setUpdatePaper] = useState('please select a paper');
     const [subPages, setSubPages] = useState('default');

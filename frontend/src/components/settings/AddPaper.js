@@ -19,7 +19,7 @@ export default function AddPaper() {
 
     
     return (        
-        <form className="row mx-5 glass-morphism p-3" onSubmit={onSubmitPaper}>
+        <form className="row flex-column align-items-center mb-5 mx-5 glass-morphism p-3" onSubmit={onSubmitPaper}>
             <h2 className="col-12 text-center">Add New Paper</h2>
 
             <div className="col-6 px-5 d-flex flex-column">

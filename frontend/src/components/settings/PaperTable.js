@@ -19,17 +19,17 @@ export default function PaperTable({ papers, updatePaper = f => f }) {
                     <tr>
                         <th className="col-3 p-3 text-center">Name</th>
                         <th className="col-3 p-3 text-center">Cost of a 20" x 16" print (£ GBP)</th>
-                        <th className="col-3 bg-dark"></th>
-                        <th className="col-3 bg-dark"></th>
+                        <th />
+                        <th />
                     </tr>
                 </thead>
                 <tbody>
                     {ourPapers.map(paper => (
-                        <tr>
+                        <tr key={paper._id}>
                             <td className="p-3 col-3 text-center">{paper.name}</td>
                             <td className="p-3 col-3 text-center">£{(paper.cost).toFixed(2)}</td>
-                            <td className="p-2 col-3 text-center"><button className="btn btn-secondary" onClick={() => updatePaper(paper)}>Update</button></td>
-                            <td className="col-3 text-center"><button className="btn btn-danger" onClick={(e) => deletePaper(e, paper._id)}>Delete</button></td>
+                            <td className="p-2 col-3 text-center"><button className="btn btn-secondary btn-sm" onClick={() => updatePaper(paper)}>Update</button></td>
+                            <td className="col-3 text-center"><button className="btn btn-danger btn-sm" onClick={(e) => deletePaper(e, paper._id)}>Delete</button></td>
                         </tr>
                     ))}
                 </tbody>

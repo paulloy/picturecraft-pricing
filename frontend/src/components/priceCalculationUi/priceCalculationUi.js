@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import './price-calculation-ui.css';
 import ImageDimensions from './imageDimensions';
 import PaperSelector from './paperSelector';
@@ -12,18 +11,17 @@ import { getPapers } from '../../actions/papers';
 export const DimensionsContext = createContext();
 
 export default function PriceCalculationUi() {
+    // Connect to store
     const dispatch = useDispatch();
-    const [papers, setPapers] = useState([]);
-
     const getPapersData = useSelector(state => state.papers.papers);
 
+    // Initialise papers as an empty array
+    const [papers, setPapers] = useState([]);
+
     useEffect(() => {
+        dispatch(getPapers());
         setPapers(getPapersData);
-    }, [getPapersData]);
-    
-    useEffect(() => {
-        dispatch(getPapers());       
-    }, []);
+    }, []);    
 
     const [dimensions, setDimensions] = useState({
         unit: 'inches',
@@ -31,7 +29,6 @@ export default function PriceCalculationUi() {
         length: 0,
         qty: 1
     });
-
 
     const [orderDetails, setOrderDetails] = useState({
         imgWidth: 0,
@@ -42,7 +39,6 @@ export default function PriceCalculationUi() {
         imgVat: '0.00',
         imgTotal: '0.00'
     });
-
 
     const [selectedPaper, setSelectedPaper] = useState(null);
 
