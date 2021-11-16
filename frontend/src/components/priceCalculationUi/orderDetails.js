@@ -34,7 +34,7 @@ export default function OrderDetails({ orderDetails, addCartItem = f => f }) {
             </div>
             <hr />
             {
-                imgDiscount == 0 
+                imgDiscount === 0 
                 ? null
                 : <div className="row">
                     <div className="col-6 text-right"><strong>Discount of {imgDiscountPercentage}%</strong></div>

@@ -20,8 +20,11 @@ export default function PriceCalculationUi() {
 
     useEffect(() => {
         dispatch(getPapers());
+    }, []);  
+    
+    useEffect(() => {       
         setPapers(getPapersData);
-    }, []);    
+    }, [getPapersData]);
 
     const [dimensions, setDimensions] = useState({
         unit: 'inches',

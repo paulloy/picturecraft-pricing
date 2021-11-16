@@ -15,8 +15,11 @@ export default function Settings() {
 
     useEffect(() => {
         dispatch(getPapers());
-        setPapers(getPapersData);
     }, []);  
+
+    useEffect(() => {       
+        setPapers(getPapersData);
+    }, [getPapersData]);
 
     const [updatePaper, setUpdatePaper] = useState('please select a paper');
     const [subPages, setSubPages] = useState('default');
