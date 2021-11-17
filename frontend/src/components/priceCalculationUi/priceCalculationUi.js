@@ -95,6 +95,11 @@ export default function PriceCalculationUi() {
         
         let subTotal = (((width * length) * paperCostPerUnitArea) * qty);
 
+        if (dimensions.unit !== 'inches') {
+            width = width / 0.393701;
+            length = length / 0.393701;
+        }
+
         if (qty >= 50) {
             discount = subTotal * 0.2;
             subTotal = subTotal - discount;
