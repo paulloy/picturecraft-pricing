@@ -89,11 +89,10 @@ export default function PriceCalculationUi() {
         if (dimensions.unit !== 'inches') {
             width = width * 0.393701;
             length = length * 0.393701;
-            paperCostPerUnitArea = selectedPaper.cost / 2064.512;
         }
-        paperCostPerUnitArea = selectedPaper.cost / 320;
+        paperCostPerUnitArea = (selectedPaper.cost / 1.2) / 320;
         
-        let subTotal = (((width * length) * paperCostPerUnitArea) * qty);
+        let netTotal = (((width * length) * paperCostPerUnitArea) * qty);
 
         if (dimensions.unit !== 'inches') {
             width = width / 0.393701;
@@ -101,29 +100,26 @@ export default function PriceCalculationUi() {
         }
 
         if (qty >= 50) {
-            discount = subTotal * 0.2;
-            subTotal = subTotal - discount;
+            discount = netTotal * 0.2;
             discountPercentage = '20';
         } else if (qty >= 20) {
-            discount = subTotal * 0.1;
-            subTotal = subTotal - discount;
+            discount = netTotal * 0.1;
             discountPercentage = '10';
         } else if (qty >= 10) {
-            discount = subTotal * 0.05;
-            subTotal = subTotal - discount;
+            discount = netTotal * 0.05;
             discountPercentage = '5';
-        }
+        } 
 
-        const vat = subTotal / 6;
+        const vat = (netTotal - discount) * 0.2;
         setOrderDetails({
             imgWidth: width,
             imgLength: length,
             imgUnit: dimensions.unit,
             imgQty: qty,
             imgType: selectedPaper.name,
-            imgSubTotal: ((subTotal * 5) / 6).toFixed(2),
+            imgSubTotal: (netTotal).toFixed(2),
             imgVat: vat.toFixed(2),
-            imgTotal: (subTotal).toFixed(2),
+            imgTotal: ((netTotal - discount) + vat).toFixed(2),
             imgDiscount: discount.toFixed(2),
             imgDiscountPercentage: discountPercentage
         });
